@@ -134,7 +134,8 @@ class BagOnlyRepo:
         except KeyError:
             raise ModelLoadingError(f'{name} is neither a single pre-trained model or '
                                     'a bag of models.')
-        bag = yaml.safe_load(open(yaml_file))
+        with open(yaml_file) as fp:
+            bag = yaml.safe_load(fp)
         signatures = bag['models']
         models = [self.model_repo.get_model(sig) for sig in signatures]
         weights = bag.get('weights')
